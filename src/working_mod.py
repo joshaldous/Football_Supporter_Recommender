@@ -170,7 +170,7 @@ if __name__ == '__main__':
     nfl_cols = ['team','year','points_for','points_against','point_difference','division_finish','playoffs',
                 'playoff_finish','win%','loss%','tie%','off_rank_pts','def_rank_pts','pt_diff_rank']
     nfl_df = nfl_df.reindex(columns = nfl_cols)
-
+    pickler(nfl_df,'/home/josh/Documents/dsi/caps/cap3/Football_Supporter_Recommender/data/pickles/NFL_to_vector.pickle')    
     # dom_df.set_index(['squad','season'],inplace=True)
     # dom_df_std = SScale().fit_transform(dom_df.set_index(['squad','season']))
     
@@ -213,7 +213,7 @@ if __name__ == '__main__':
     # cardinals_std = cardinals_std.reshape(1,-1)
     # np.array().ravel()
     # print(cardinals_std.shape)
-    epl_mat = unpickler('/home/josh/Documents/dsi/caps/cap3/Football_Supporter_Recommender/data/pickles/epl_dists/epl_vectorized.pickle')
+    # epl_mat = unpickler('/home/josh/Documents/dsi/caps/cap3/Football_Supporter_Recommender/data/pickles/epl_dists/epl_vectorized.pickle')
     
     
     ## CARDINALS ##
@@ -277,7 +277,7 @@ if __name__ == '__main__':
     # pickler(bill_jac_top,'/home/josh/Documents/dsi/caps/cap3/Football_Supporter_Recommender/data/pickles/nfl_dists/bills_jaccard.pickle')
     # print(bill_euc_top)
     # print(bill_cos_dist_top)
-    # print(bill_cos_sim_top)
+    # print(bill_cos_sim_top)'/home/josh/Documents/dsi/caps/cap3/Football_Supporter_Recommender/data/pickles/epl_domestic_league_df_clean.pickle'
     # print(bill_jac_top)
 
     ## PANTHERS ##

@@ -36,6 +36,14 @@ if __name__ == '__main__':
     nfl_df['playoffs'] = nfl_df.playoff_finish.apply(lambda x: 1 if len(x) > 0 else 0) 
     nfl_df.team = nfl_df.team.str.replace('*','').str.replace('Team','Redskins').str.split(' ').str[-1]
     nfl_df.division_finish = nfl_df.division_finish.str[:1].astype(int)
+    nfl_df = new_int_col(nfl_df,'points_for')
+    nfl_df = new_int_col(nfl_df,'points_against')
+    nfl_df = new_int_col(nfl_df,'point_difference')
+    nfl_df = new_int_col(nfl_df,'off_rank_yards')
+    nfl_df = new_int_col(nfl_df,'off_rank_pts')
+    nfl_df = new_int_col(nfl_df,'def_rank_pts')
+    nfl_df = new_int_col(nfl_df,'def_rank_yards')
+    nfl_df = new_int_col(nfl_df,'pt_diff_rank')
     nfl_df = new_int_col(nfl_df,'wins')
     nfl_df = new_int_col(nfl_df,'losses')
     nfl_df = new_int_col(nfl_df,'ties')
@@ -47,6 +55,6 @@ if __name__ == '__main__':
     nfl_df.playoff_finish = nfl_df.playoff_finish.apply(lambda x: 0 if x == '' else x)
     for k, v in playoffs_dict.items():
         nfl_df.playoff_finish = nfl_df.playoff_finish.apply(lambda x: v if x == k else x)
-    pickler(nfl_df,'/home/josh/Documents/dsi/caps/cap3/Football_Supporter_Recommender/data/pickles/NFL_df_clean.pickle')
+    pickler(nfl_df,'/home/josh/Documents/dsi/caps/cap3/Football_Supporter_Recommender/data/pickles/NFL_df_clean_update.pickle')
     # nfl_df = unpickler('/home/josh/Documents/dsi/caps/cap3/Football_Supporter_Recommender/data/pickles/NFL_df_clean.pickle')
-    print(nfl_df.columns)
+    print(nfl_df.info())

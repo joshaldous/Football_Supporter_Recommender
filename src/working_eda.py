@@ -44,17 +44,14 @@ def europe_finder(df1,df2):
     europe = []
     col1 = []
     col2 = []
-    for k,v in zip(df2.squad,df2.season):
-        europe.append((k,v)) 
-    for team,yr in zip(df1.squad,df1.season):
-        col1.append((team,yr))
-    for x in col1:
-        for y in europe:
-            if x in y:
+    for x,y in zip(df1.squad,df1.season):
+        for j,k in zip(df2.squad,df2.season):
+            if (x,y) == (j,k):
+                col1.append(y)
                 col2.append(1)
-            elif x not in y:
-                col2.append(0) 
-    return col2
+            else:
+                col1.append((x,0))
+    return col1
 
 
 
@@ -124,7 +121,7 @@ if __name__ == '__main__':
     icup_df = icup_df.int_trophy_counter()
     icup_df = icup_df.season_reducer(2009,2020)
     icup_df.drop(['comp','top_team_scorer','goalkeeper','year','notes'],axis=1,inplace=True)
-    icup_df.pickler('/home/josh/Documents/dsi/caps/cap3/Football_Supporter_Recommender/data/pickles/epl_intnl_cup_df_clean.pickle')
+    icup_df.pickler('/home/josh/Documents/dsi/caps/cap3/Football_Supporter_Recommender/data/pickles/epl_intnl_cup_df_clean_update.pickle')
     
     dcup_df = LeagueDFEDA(epl_dcup_df)
     dcup_df = dcup_df.col_name_cleaner()
@@ -136,7 +133,7 @@ if __name__ == '__main__':
     dcup_df = dcup_df.dcup_trophy_counter()
     dcup_df = dcup_df.season_reducer(2009,2020)
     dcup_df.drop(['top_team_scorer','goalkeeper','year','lgrank','country','notes','comp'],axis=1,inplace=True)
-    dcup_df.pickler('/home/josh/Documents/dsi/caps/cap3/Football_Supporter_Recommender/data/pickles/epl_domestic_cup_df_clean.pickle')
+    dcup_df.pickler('/home/josh/Documents/dsi/caps/cap3/Football_Supporter_Recommender/data/pickles/epl_domestic_cup_df_clean_update.pickle')
     
     dom_df = LeagueDFEDA(epl_lg_df)
     dom_df = dom_df.col_name_cleaner()
@@ -152,13 +149,15 @@ if __name__ == '__main__':
     dom_df = dom_df.new_int_col('pts','pts',None)
     dom_df = dom_df.new_int_col('ga','ga',None)
     dom_df = dom_df.new_int_col('gf','gf',None)
-    dom_df = dom_df.dom_trophy_counter()
+    # dom_df = dom_df.dom_trophy_counter()
+    dom_df['europe'] = dom_df.lg_finish.apply(lambda x: 1 if x >= 6 else 0) 
     dom_df = dom_df.season_reducer(2009,2020)
-    dom_df['dom_win%'] = dom_df.w / dom_df.mp
-    dom_df['dom_loss%'] = dom_df.l / dom_df.mp
+    dom_df['wins'] = dom_df.apply(lambda row: row['w'] * 0.75 if row['dom_comp_lvl'] != 1 else row['w'],axis=1)
+    dom_df['losses'] = dom_df.apply(lambda row: row['l'] * 1.25 if row['dom_comp_lvl'] != 1 else row['l'],axis=1)
+    dom_df['dom_win%'] = dom_df.wins / dom_df.mp
+    dom_df['dom_loss%'] = dom_df.losses / dom_df.mp
     dom_df['dom_draw%'] = dom_df.d / dom_df.mp
-    # europe_col = europe_finder(dom_df,icup_df)
-    # dom_df['europe'] = europe_col
+    # dom_df['europe'] = dom_df.apply(europe_finder(dom_df,icup_df),axis=1)
     dom_df.country = dom_df.country.str[-3:]
     dom_df.drop(['lgrank','comp','top_team_scorer','goalkeeper','year','notes'],axis=1,inplace=True)
     
@@ -168,8 +167,13 @@ if __name__ == '__main__':
     dom_df['gf_ranks'] = team_ranker(dom_df,gf_ranks_yr)
     dom_df['ga_ranks'] = team_ranker(dom_df,ga_ranks_yr)
     dom_df['gdiff_ranks'] = team_ranker(dom_df,gdiff_ranks_yr)
-    dom_df.pickler('/home/josh/Documents/dsi/caps/cap3/Football_Supporter_Recommender/data/pickles/epl_domestic_league_df_clean.pickle')
+    print('done')
+    dom_df.pickler('/home/josh/Documents/dsi/caps/cap3/Football_Supporter_Recommender/data/pickles/epl_domestic_league_df_clean_update.pickle')
     
+    # euro_df = icup_df.groupby(['squad','season']).mean()
+    # euro_df['europe'] = 1
+    
+
     # goals_total_df = dom_df.groupby(['season','dom_comp_lvl']).sum()
     # goals_total_df.reset_index(inplace=True)
     # g_total = goals_total_df.copy()
@@ -180,7 +184,7 @@ if __name__ == '__main__':
     # dom_df['gf_pct'] = dom_df.apply(lambda row: row['gf'] / goals_for_percenterizer(row,dom_df,g_total),axis=0)
     # dom_df['ga_pct'] = dom_df.season.apply(lambda x: goals_for_percenterizer(x,dom_df,g_total,'ga'))
     
-    print(dom_df.head())
+  
     # print(g_total.head())
     # print(ga_ranks_yr['Manchester City'])
     # print(icup_df.head())

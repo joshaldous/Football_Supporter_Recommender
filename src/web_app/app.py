@@ -52,18 +52,15 @@ def predict ():
     epl_mat = unpickler('/home/josh/Documents/dsi/caps/cap3/Football_Supporter_Recommender/data/pickles/epl_dists/epl_vectorized.pickle')
     nfl_df = unpickler('/home/josh/Documents/dsi/caps/cap3/Football_Supporter_Recommender/data/pickles/NFL_to_vector.pickle')
     team = flask.request.form['team']
-    print(team)
     team_vec = SimilarityDF(nfl_df).vectorizer([team],'NFL')
     selected = Distances(team_vec,epl_mat)
-    team_euc_top = selected.top_dists(distance_calc='euclidean',index_=epl_df.squad.unique(),col='euc_dist',number=3)
-    team_cos_dist_top = selected.top_dists(distance_calc='cosine_dist',index_=epl_df.squad.unique(),col='cos_dist',number=3)
+    # team_cos_top = selected.top_dists(distance_calc='euclidean',index_=epl_df.squad.unique(),col='euc_dist',number=3)
+    team_cos_top = selected.top_dists(distance_calc='cosine_dist',index_=epl_df.squad.unique(),col='cos_dist',number=3)
     # team_cos_sim_top = selected.top_dists(distance_calc='cosine_sim',index_=epl_df.squad.unique(),col='cos_sim',number=3)[::-1]
     # team_jac_top = selected.top_dists(distance_calc='jaccard',index_=epl_df.squad.unique(),col='jac_dist',number=3)
     # return flask.render_template('index_album.html')
-    print(team_euc_top)
-    idx = [x for x in team_euc_top.index]
+    idx = [x for x in team_cos_top.index]
     team1 = idx[0]
-    print(team1)
     team2 = idx[1]
     team3 = idx[2]
     team1_img = img_dict[team1]

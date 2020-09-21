@@ -85,10 +85,8 @@
       <!--<p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p> -->
       <p>
         <form action="/info" method="post">
-        <button class="btn btn-sm btn-outline-secondary" name="team" value="team1_info">Team Info</button>   <!-- method='post' href="/info"-->
-        </form>
-        <form action="/info" method="post">
-        <button class="btn btn-sm btn-outline-secondary" name='team' value="team1_goals">Highlights</button>
+        <button class="btn btn-lg btn-primary" name="team" value="team1_info">Team Info</button>   <!-- method='post' href="/info"-->
+        <button class="btn btn-lg btn-primary" name='team' value="team1_goals">Highlights</button>
         </form>
       </p>
     </div>
@@ -102,32 +100,32 @@
       <div class="row">
         <div class="col-lg-6">
         <p><img src="{{ url_for('static',filename=team2_img) }}" alt= 'team2' width="250" height="200"/><title>team logo</title></p>
-          <div class="d-flex justify-content-between align-items-left"> 
+          <div class="d-flex justify-content-between align-items-center"> 
             <div class="btn-group">
               <form action="/info" method='post'>
               <center>
-              <button class="btn btn-sm btn-outline-secondary" name='team' value="team2_info">Team Info</button>
-              <button class="btn btn-sm btn-outline-secondary" name='team' value="team2_goals">Team Goals</button>
+              <button class="btn btn-lg btn-primary" name='team' value="team2_info">Team Info</button>
+              <button class="btn btn-lg btn-primary" name='team' value="team2_goals">Highlights</button>
               </center>
               </form>
             </div>
           </div>
         </div>
         <div class="col-lg-6">
-        <center>
         <p><img src="{{ url_for('static',filename=team3_img) }}" alt= 'team3' width="250" height="200"/><title>team logo</title></p>
-        </center>
-        </form>
           <div class="d-flex justify-content-between align-items-right">
             <div class="btn-group">
-              <form action="/info" method='post'> 
-                <button type="button" class="btn btn-sm btn-outline-secondary" name='team' value="team3_info">Team Info</button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" name='team' value="team3_goals">Highlights</button>
+              <form action="/info" method='post'>
+              <center> 
+              <button class="btn btn-lg btn-primary" name='team' value="team3_info">Team Info</button>
+              <button class="btn btn-lg btn-primary" name='team' value="team3_goals">Highlights</button>
+              </center>
               </form>
             </div>
           </div>
         </div>
       </div>
+    <span class="stretch"></span>
     </div>
   </div>
   </section>  

@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.preprocessing import StandardScaler as SScale
 from sklearn.neighbors import DistanceMetric
-from working_eda import LeagueDFEDA
+from final_epl_eda import LeagueDFEDA
 from scipy import stats
 from scipy.spatial.distance import euclidean, jaccard, cosine
 import time

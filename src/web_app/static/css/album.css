@@ -31,3 +31,37 @@ footer {
 footer p {
   margin-bottom: .25rem;
 }
+
+.container {
+  text-align: justify;
+  -ms-text-justify: distribute-all-lines;
+  text-justify: distribute-all-lines;
+  /* just for demo */
+  min-width: 612px;
+}
+
+.col-lg-6 {
+  width: 150px;
+  height: 125px;
+  vertical-align: top;
+  display: inline-block;
+  *display: inline;
+  zoom: 1
+}
+
+.stretch {
+  width: 100%;
+  display: inline-block;
+  font-size: 0;
+  line-height: 0
+}
+
+.box1,
+.box3 {
+  background: #ccc
+}
+
+.box2,
+.box4 {
+  background: #0ff
+}

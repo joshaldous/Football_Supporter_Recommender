@@ -16,15 +16,29 @@ body {
 .carousel {
   margin-bottom: 4rem;
 }
-/* Since positioning the image, we need to help out the caption */
+/* Since positioning the image, we need to help out the caption **background-blend-mode: multiply;*/
 .carousel-caption {
   bottom: 3rem;
   z-index: 10;
 }
-
+.carousel-inner .item .active {
+  height: 100%;
+  background-color: rgb(151, 8, 8);
+}
+.carousel-inner .item {
+  color: red;
+}
+/*font-size: 2em;
+  text-align: center;
+  text-transform: uppercase;
+  
+  position: absolute;
+  top: 60%;
+  left: 0;
+  right: 0;*/
 /* Declare heights because of positioning of img element */
 .carousel-item {
-  height: 32rem;
+  height: 40rem;
 }
 .pixelated {
   -ms-interpolation-mode: nearest-neighbor;

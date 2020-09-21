@@ -24,7 +24,7 @@ img_dict = {'Arsenal':'epl/18bb7c10.png','Aston Villa':'epl/8602292d.png','Bourn
 url_dict = {'Arsenal':'https://www.arsenal.com','Aston Villa':'https://avfc.co.uk','Bournemouth':'https://afcb.co.uk',
             'Brighton':'https://brightonandhovealbion.com','Burnley':'https://burnleyfootballclub.com','Chelsea':'https://chelseafc.com',
             'Crystal Palace':'https://cpfc.co.uk','Everton':'https://evertonfc.com','Leicester City':'https://lcfc.com',
-            'Liverpool':'https://liverpoolfc.com','Manchester City':'https://mancity.com','Manchester Utd':'https://manutd.com',
+            'Liverpool':'https://liverpoolfc.com','Manchester City':'https://mancity.com','Manchester Utd':'https://www.manutd.com',
             'Newcastle Utd':'https://nufc.co.uk','Norwich City':'https://canaries.co.uk','Sheffield Utd':'https://sufc.co.uk',
             'Southampton':'https://southamptonfc.com','Tottenham':'https://tottenhamhotspur.com','Watford':'https://watfordfc.com',
             'West Ham':'https://whufc.com','Wolves':'https://wolves.co.uk'}
@@ -40,12 +40,17 @@ goal_dict = {'Arsenal':'https://www.youtube.com/watch?v=yO31QsfmnRE','Aston Vill
             'Tottenham':'https://www.youtube.com/watch?v=f8MxdAkf4xY','Watford':'https://www.youtube.com/watch?v=988yKC-odmM',
             'West Ham':'https://www.youtube.com/watch?v=hxMg3wswzZU','Wolves':'https://www.youtube.com/watch?v=ICyVBpnSOfQ'}
 
-@app.route('/', methods = ['GET','POST'])
+app.secret_key = 'A0Zr98j/3yX R~XHHVOA;269C.Ssio'
 
+@app.route('/', methods = ['GET','POST'])
 def index():
     return flask.render_template('index.html')
     
-    
+
+# @app.route('/search', methods = ['GET','POST'])
+#     def search():
+
+
 @app.route('/predict', methods = ['GET','POST'])
 def predict ():
     epl_df = unpickler('/home/josh/Documents/dsi/caps/cap3/Football_Supporter_Recommender/data/pickles/epl_domestic_league_df_clean_update.pickle')
@@ -54,15 +59,15 @@ def predict ():
     team = flask.request.form['team']
     team_vec = SimilarityDF(nfl_df).vectorizer([team],'NFL')
     selected = Distances(team_vec,epl_mat)
-    # team_cos_top = selected.top_dists(distance_calc='euclidean',index_=epl_df.squad.unique(),col='euc_dist',number=3)
     team_cos_top = selected.top_dists(distance_calc='cosine_dist',index_=epl_df.squad.unique(),col='cos_dist',number=3)
-    # team_cos_sim_top = selected.top_dists(distance_calc='cosine_sim',index_=epl_df.squad.unique(),col='cos_sim',number=3)[::-1]
-    # team_jac_top = selected.top_dists(distance_calc='jaccard',index_=epl_df.squad.unique(),col='jac_dist',number=3)
-    # return flask.render_template('index_album.html')
     idx = [x for x in team_cos_top.index]
     team1 = idx[0]
     team2 = idx[1]
     team3 = idx[2]
+    flask.session['team1'] = team1
+    flask.session['team2'] = team2
+    flask.session['team3'] = team3
+    
     team1_img = img_dict[team1]
     team1_info = url_dict[team1]
     team1_goals = goal_dict[team1]
@@ -78,10 +83,28 @@ def predict ():
     
 @app.route('/info', methods = ['GET','POST'])
 def info():
+    team1 = flask.session.get('team1',None)
+    team2 = flask.session.get('team2',None)
+    team3 = flask.session.get('team3',None)
     team_url = flask.request.form['team']
     print(team_url)
-    url = flask.request.form[team_url]
-    print(url)
+    team_, site = team_url.split('_')
+    print(team_)
+    print(site)
+    if site == 'info':
+        if team_ == 'team1':
+            url = url_dict[team1]
+        elif team_ == 'team2':
+            url = url_dict[team2]
+        elif team_ == 'team3':
+            url = url_dict[team3]
+    elif site == 'goals':
+        if team_ == 'team1':
+            url = goal_dict[team1]
+        elif team_ == 'team2':
+            url = goal_dict[team2]
+        elif team_ == 'team3':
+            url = goal_dict[team3]
     return flask.redirect(url,code=302)
     
 if __name__ == '__main__':

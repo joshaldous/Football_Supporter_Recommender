@@ -96,18 +96,18 @@ if __name__ == '__main__':
     epl_dcup_df = unpickler(epl_dom_cp_fp)
     epl_icup_df = unpickler(epl_int_cp_fp)
     
-    icup_df = LeagueDFEDA(epl_icup_df)      # creates international competition class for eda
+    icup_df = LeagueDFEDA(epl_icup_df)                              # creates international competition class for eda
     icup_df = icup_df.col_name_cleaner()
-    icup_df = icup_df.new_int_col('year','season',4)    # creates a year column as an integer
+    icup_df = icup_df.new_int_col('year','season',4)                # creates a year column as an integer
     icup_df = icup_df.new_int_col('comp','competition',1)           # champions league = 1, europa league = 2
     icup_df = icup_df.new_int_col('attendance','attendance',None)
     icup_df = icup_df.new_int_col('gdiff','gdiff',None)
     icup_df = icup_df.int_trophy_counter()
-    icup_df = icup_df.season_reducer(2012,2020)         # reduces the years used for comparison to 2012 to 2019
+    icup_df = icup_df.season_reducer(2016,2020)                     # reduces the years used for comparison to 2017 to 2019
     icup_df.drop(['comp','top_team_scorer','goalkeeper','year','notes'],axis=1,inplace=True)    # drops unnecessary columns
     icup_df.pickler('/home/josh/Documents/dsi/caps/cap3/Football_Supporter_Recommender/data/pickles/epl_intnl_cup_df_clean_update.pickle')      # saves the class for the comparison
     
-    dcup_df = LeagueDFEDA(epl_dcup_df)      # creates domestic cup competition class for eda 
+    dcup_df = LeagueDFEDA(epl_dcup_df)                      # creates domestic cup competition class for eda 
     dcup_df = dcup_df.col_name_cleaner()
     dcup_df = dcup_df.new_int_col('year','season',4)        # creates a year column as an integer
     dcup_df = dcup_df.new_int_col('lgrank','finish',-2)
@@ -115,40 +115,40 @@ if __name__ == '__main__':
     dcup_df = dcup_df.new_int_col('gdiff','gdiff',None)
     dcup_df['competition'] = dcup_df.comp.apply(lambda x: 1 if x == 'FA Cup' else 2)   # FA Cup = 1, EFL Cup =2 
     dcup_df = dcup_df.dcup_trophy_counter()
-    dcup_df = dcup_df.season_reducer(2012,2020)          # reduces the years used for comparison to 2012 to 2019
+    dcup_df = dcup_df.season_reducer(2016,2020)             # reduces the years used for comparison to 2017 to 2019
     dcup_df.drop(['top_team_scorer','goalkeeper','year','lgrank','country','notes','comp'],axis=1,inplace=True)         # drops unnecessary columns
     dcup_df.pickler('/home/josh/Documents/dsi/caps/cap3/Football_Supporter_Recommender/data/pickles/epl_domestic_cup_df_clean_update.pickle')
     
-    dom_df = LeagueDFEDA(epl_lg_df)         # creates a domestic league competition class for eda
+    dom_df = LeagueDFEDA(epl_lg_df)                                  # creates a domestic league competition class for eda
     dom_df = dom_df.col_name_cleaner()  
-    dom_df = dom_df.new_int_col('year','season',4)          # creates a year column as an integer
+    dom_df = dom_df.new_int_col('year','season',4)                   # creates a year column as an integer
     dom_df = dom_df.new_int_col('lgrank','lg_finish',-2)
-    dom_df = dom_df.new_int_col('comp','dom_comp_lvl',1)            # premier league = 1, championship = 2
+    dom_df = dom_df.new_int_col('comp','dom_comp_lvl',1)             # premier league = 1, championship = 2
     dom_df = dom_df.new_int_col('attendance','attendance',None)      # creates int columns for strings
-    dom_df = dom_df.new_int_col('gdiff','gdiff',None)   # creates int columns for strings
-    dom_df = dom_df.new_int_col('mp','mp',None)         # creates int columns for strings
-    dom_df = dom_df.new_int_col('w','w',None)           # creates int columns for strings
-    dom_df = dom_df.new_int_col('l','l',None)           # creates int columns for strings
-    dom_df = dom_df.new_int_col('d','d',None)           # creates int columns for strings
-    dom_df = dom_df.new_int_col('pts','pts',None)       # creates int columns for strings
-    dom_df = dom_df.new_int_col('ga','ga',None)         # creates int columns for strings
-    dom_df = dom_df.new_int_col('gf','gf',None)         # creates int columns for strings
+    dom_df = dom_df.new_int_col('gdiff','gdiff',None)                # creates int columns for strings
+    dom_df = dom_df.new_int_col('mp','mp',None)                      # creates int columns for strings
+    dom_df = dom_df.new_int_col('w','w',None)                        # creates int columns for strings
+    dom_df = dom_df.new_int_col('l','l',None)                        # creates int columns for strings
+    dom_df = dom_df.new_int_col('d','d',None)                        # creates int columns for strings
+    dom_df = dom_df.new_int_col('pts','pts',None)                    # creates int columns for strings
+    dom_df = dom_df.new_int_col('ga','ga',None)                      # creates int columns for strings
+    dom_df = dom_df.new_int_col('gf','gf',None)                      # creates int columns for strings
     dom_df = dom_df.dom_trophy_counter()
     dom_df['europe'] = dom_df.apply(lambda row: 1 if (row['lg_finish'] >= 6 & row['dom_comp_lvl'] == 1) else 0,axis=1)     # creates a column to compare to nfl 'playoff' teams
-    dom_df = dom_df.season_reducer(2012,2020)       
-    dom_df['wins'] = dom_df.apply(lambda row: row['w'] * 0.5 if row['dom_comp_lvl'] != 1 else row['w'],axis=1)          # creates a win column that penalizes win in the championship
-    dom_df['losses'] = dom_df.apply(lambda row: row['l'] * 2 if row['dom_comp_lvl'] != 1 else row['l'],axis=1)          # creates a loss column that penalizes losses in the championship
+    dom_df = dom_df.season_reducer(2016,2020)                                                                              # reduces the years used for comparison to 2017 to 2019
+    dom_df['wins'] = dom_df.apply(lambda row: row['w'] * 0.5 if row['dom_comp_lvl'] != 1 else row['w'],axis=1)             # creates a win column that penalizes win in the championship
+    dom_df['losses'] = dom_df.apply(lambda row: row['l'] * 2 if row['dom_comp_lvl'] != 1 else row['l'],axis=1)             # creates a loss column that penalizes losses in the championship
     dom_df['dom_win%'] = dom_df.wins / dom_df.mp                    # creates a win% column to compare to nfl win%
-    dom_df['dom_loss%'] = dom_df.losses / dom_df.mp             # creates a loss% column to compare to nfl loss%
-    dom_df['dom_draw%'] = dom_df.d / dom_df.mp                 # creates a draw% column to compare to nfl draw%
-    dom_df.country = dom_df.country.str[-3:]                # reduces country column to only showing the country once
+    dom_df['dom_loss%'] = dom_df.losses / dom_df.mp                 # creates a loss% column to compare to nfl loss%
+    dom_df['dom_draw%'] = dom_df.d / dom_df.mp                      # creates a draw% column to compare to nfl draw%
+    dom_df.country = dom_df.country.str[-3:]                        # reduces country column to only showing the country once
     dom_df.drop(['lgrank','comp','top_team_scorer','goalkeeper','year','notes'],axis=1,inplace=True)    # drops unnecessary columns
     
-    gf_ranks_yr = goals_ranker(dom_df,'gf',False)       # creates offensive rankings for goals scored per season
-    ga_ranks_yr = goals_ranker(dom_df,'ga',True)        # creates defensive rankings for goals allowed per season
-    gdiff_ranks_yr = goals_ranker(dom_df,'gdiff',False)     # creates goal difference rankings per season
-    dom_df['gf_ranks'] = team_ranker(dom_df,gf_ranks_yr)    # creates offensive rankings for goals scored per season
-    dom_df['ga_ranks'] = team_ranker(dom_df,ga_ranks_yr)    # creates defensive rankings for goals allowed per season
+    gf_ranks_yr = goals_ranker(dom_df,'gf',False)                       # creates offensive rankings for goals scored per season
+    ga_ranks_yr = goals_ranker(dom_df,'ga',True)                        # creates defensive rankings for goals allowed per season
+    gdiff_ranks_yr = goals_ranker(dom_df,'gdiff',False)                 # creates goal difference rankings per season
+    dom_df['gf_ranks'] = team_ranker(dom_df,gf_ranks_yr)                # creates offensive rankings for goals scored per season
+    dom_df['ga_ranks'] = team_ranker(dom_df,ga_ranks_yr)                # creates defensive rankings for goals allowed per season
     dom_df['gdiff_ranks'] = team_ranker(dom_df,gdiff_ranks_yr)          # creates goal difference rankings per season
     dom_df.pickler('/home/josh/Documents/dsi/caps/cap3/Football_Supporter_Recommender/data/pickles/epl_domestic_league_df_clean_update.pickle')   # saves the class for comparison
     

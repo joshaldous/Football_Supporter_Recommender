@@ -129,15 +129,15 @@ if __name__ == '__main__':
     dom_df = unpickler('/home/josh/Documents/dsi/caps/cap3/Football_Supporter_Recommender/data/pickles/epl_domestic_league_df_clean_update.pickle')  # unpickles the epl team data
     nfl_df = unpickler('/home/josh/Documents/dsi/caps/cap3/Football_Supporter_Recommender/data/pickles/NFL_df_clean_update.pickle')     # unpickles the nfl team data
     
-    dom_df.drop(['country','mp','w','wins','losses','gdiff','dom_draw%','lg_finish',
-                 'dom_comp_lvl','d','l','pts','attendance'],axis=1,inplace=True)  # drops columns from the epl data deemed to not be useful
-    nfl_df.drop(['wins','losses','ties','off_rank_yards','def_rank_yards','turnover_ratio_rank',        # drops columns from the nfl data that is deemed to not be useful
-                 'division_finish', 'points_for','yard_diff_rank','margin_of_vict','point_difference',
-                 'playoff_finish','strgth_sched','srs','tie%','off_srs','def_srs'],axis=1,inplace=True)  
+    dom_df.drop(['country','mp','w','wins','losses','gdiff','dom_draw%','lg_finish',           # drops columns from the epl data deemed to not be useful
+                 'dom_comp_lvl','d','l','pts','attendance'],axis=1,inplace=True)  
+    
+    nfl_df.drop(['wins','losses','ties','off_rank_yards','def_rank_yards','turnover_ratio_rank','off_rank_pts',       # drops columns from the nfl data that is deemed to not be useful
+                 'def_rank_pts','pt_diff_rank','division_finish', 'points_for','yard_diff_rank','margin_of_vict',
+                 'point_difference','playoff_finish','strgth_sched','srs','tie%','off_srs','def_srs'],axis=1,inplace=True)  
 
     nfl_cols = nfl_df.columns.tolist()
-    nfl_cols = ['team','tds','points_against','year','playoffs',    # reorders columns to match the epl data
-                'win%','loss%','off_rank_pts','def_rank_pts','pt_diff_rank']
+    nfl_cols = ['team','tds','tds_allowed','year','playoffs','win%','loss%']    # reorders columns to match the epl data
     nfl_df = nfl_df.reindex(columns = nfl_cols)
     
     pickler(dom_df,'/home/josh/Documents/dsi/caps/cap3/Football_Supporter_Recommender/data/pickles/EPL_to_vector_update.pickle')        # saves epl data to be standardized
@@ -150,8 +150,8 @@ if __name__ == '__main__':
     # nfl_df = unpickler('/home/josh/Documents/dsi/caps/cap3/Football_Supporter_Recommender/data/pickles/NFL_to_vector_update.pickle')
     epl_mat = unpickler('/home/josh/Documents/dsi/caps/cap3/Football_Supporter_Recommender/data/pickles/epl_dists/epl_vectorized_update.pickle')
     
-    w = [20,5,8,20,15,10,14,14]     # weights for distance calculations
-    w = w*7 
+    weights = [0.08,0.05,0.093,0.08,0.03]     # weights used in distance calculations 
+    w = weights*3
     
     ###  Below used to tweak comparisons not used in calculations for recommendation ###
 

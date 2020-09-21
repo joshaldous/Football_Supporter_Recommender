@@ -25,7 +25,7 @@ if __name__ == '__main__':
                       'srs','off_srs','def_srs','year']
     nfl_df.drop(['league','coaches','top_approx_val_plyr','top_passer','top_rusher','top_receiver','tot_teams'],axis=1,inplace=True)        # drops unnecessary columns
     nfl_df = new_int_col(nfl_df,'year')     
-    nfl_df = nfl_df[(nfl_df.year >= 2013) & (nfl_df.year < 2020)]       # reduces years to 2013 - 2019 for comparison
+    nfl_df = nfl_df[(nfl_df.year >= 2017) & (nfl_df.year < 2020)]       # reduces years to 2013 - 2019 for comparison
     nfl_df['playoffs'] = nfl_df.playoff_finish.apply(lambda x: 1 if len(x) > 0 else 0)      # creates a column for teams making the playoffs
     nfl_df.team = nfl_df.team.str.replace('*','').str.replace('Team','Redskins').str.split(' ').str[-1]     # cleans team name column
     nfl_df.division_finish = nfl_df.division_finish.str[:1].astype(int)
@@ -41,6 +41,7 @@ if __name__ == '__main__':
     nfl_df = new_int_col(nfl_df,'losses')
     nfl_df = new_int_col(nfl_df,'ties')
     nfl_df = new_int_col(nfl_df,'tds')
+    nfl_df = new_int_col(nfl_df,'tds_allowed')
     nfl_df['win%'] = nfl_df.wins / 16           # creates a win% column
     nfl_df['loss%'] = nfl_df.losses / 16        # creates a loss% column
     nfl_df['tie%'] = nfl_df.ties / 16           # creates a tie% column

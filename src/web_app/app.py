@@ -1,10 +1,10 @@
 import flask
 import sys
 sys.path.append('/home/josh/Documents/dsi/caps/cap3/Football_Supporter_Recommender/src/')
-import working_mod 
-import working_eda
-from working_mod import pickler, unpickler, SimilarityDF, Distances
-from working_eda import LeagueDFEDA
+import final_comparison 
+import final_epl_eda
+from final_comparison import pickler, unpickler, SimilarityDF, Distances
+from final_epl_eda import LeagueDFEDA
 import pickle
 
 app = flask.Flask(__name__)
@@ -48,9 +48,9 @@ def index():
     
 @app.route('/predict', methods = ['GET','POST'])
 def predict ():
-    epl_df = unpickler('/home/josh/Documents/dsi/caps/cap3/Football_Supporter_Recommender/data/pickles/epl_domestic_league_df_clean.pickle')
-    epl_mat = unpickler('/home/josh/Documents/dsi/caps/cap3/Football_Supporter_Recommender/data/pickles/epl_dists/epl_vectorized.pickle')
-    nfl_df = unpickler('/home/josh/Documents/dsi/caps/cap3/Football_Supporter_Recommender/data/pickles/NFL_to_vector.pickle')
+    epl_df = unpickler('/home/josh/Documents/dsi/caps/cap3/Football_Supporter_Recommender/data/pickles/epl_domestic_league_df_clean_update.pickle')
+    epl_mat = unpickler('/home/josh/Documents/dsi/caps/cap3/Football_Supporter_Recommender/data/pickles/epl_dists/epl_vectorized_update.pickle')
+    nfl_df = unpickler('/home/josh/Documents/dsi/caps/cap3/Football_Supporter_Recommender/data/pickles/NFL_to_vector_update.pickle')
     team = flask.request.form['team']
     team_vec = SimilarityDF(nfl_df).vectorizer([team],'NFL')
     selected = Distances(team_vec,epl_mat)
